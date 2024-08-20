@@ -1,0 +1,87 @@
+[
+	{
+		"_id": {
+			"$oid": "66c44da396aa5625b132ef48"
+		},
+		"name": "Karil Bruffell",
+		"email": "kbruffell2@mail.ru",
+		"password": "mA0}pBfdQ4~}Y",
+		"phone": "+86 759 916 6254",
+		"dlImage": "http://dummyimage.com/219x100.png/cc0000/ffffff",
+		"bookings": [{ "$oid": "66c4592c96aa5625b132ef5f" }],
+		"createdAt": {
+			"$date": "2024-01-01T20:23:02.000Z"
+		},
+		"updatedAt": {
+			"$date": "2023-09-12T06:05:41.000Z"
+		}
+	},
+	{
+		"_id": {
+			"$oid": "66c44da396aa5625b132ef49"
+		},
+		"name": "Granthem Pinckstone",
+		"email": "gpinckstone3@time.com",
+		"password": "nA3!\"Tq'<",
+		"phone": "+86 455 784 8267",
+		"dlImage": "http://dummyimage.com/238x100.png/5fa2dd/ffffff",
+		"bookings": [{ "$oid": "66c4592c96aa5625b132ef60" }],
+		"createdAt": {
+			"$date": "2023-10-25T14:38:24.000Z"
+		},
+		"updatedAt": {
+			"$date": "2023-12-15T15:28:14.000Z"
+		}
+	},
+	{
+		"_id": {
+			"$oid": "66c44da396aa5625b132ef4a"
+		},
+		"name": "Kristian Aust",
+		"email": "kaust4@noaa.gov",
+		"password": "mC0~<\"6SBT}Wm",
+		"phone": "+55 374 238 7805",
+		"dlImage": "http://dummyimage.com/155x100.png/dddddd/000000",
+		"bookings": [{ "$oid": "66c4592c96aa5625b132ef61" }],
+		"createdAt": {
+			"$date": "2023-12-18T12:33:57.000Z"
+		},
+		"updatedAt": {
+			"$date": "2023-09-30T06:44:08.000Z"
+		}
+	},
+	{
+		"_id": {
+			"$oid": "66c44da396aa5625b132ef4b"
+		},
+		"name": "Franklyn Mattusov",
+		"email": "fmattusov5@geocities.jp",
+		"password": "cE0|H$<%",
+		"phone": "+383 446 671 3094",
+		"dlImage": "http://dummyimage.com/141x100.png/cc0000/ffffff",
+		"bookings": [{ "$oid": "66c4592c96aa5625b132ef62" }],
+		"createdAt": {
+			"$date": "2023-07-23T10:14:08.000Z"
+		},
+		"updatedAt": {
+			"$date": "2024-04-29T13:28:44.000Z"
+		}
+	},
+	{
+		"_id": {
+			"$oid": "66c44da396aa5625b132ef4c"
+		},
+		"name": "Gilburt Vakhrushev",
+		"email": "gvakhrushev6@washington.edu",
+		"password": "nM7'/3VFmoUz",
+		"phone": "+46 129 479 1391",
+		"dlImage": "http://dummyimage.com/234x100.png/cc0000/ffffff",
+		"bookings": [{ "$oid": "66c4592c96aa5625b132ef63" }],
+		"createdAt": {
+			"$date": "2023-11-03T13:32:09.000Z"
+		},
+		"updatedAt": {
+			"$date": "2024-02-08T22:36:52.000Z"
+		}
+	}
+]

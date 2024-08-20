@@ -1,0 +1,6 @@
+id,make,model,year,rentRate.daily,rentRate.hourly,location.type,location.coordinates,location.coordinates,status,fuelType,currentCustomerId,ratings,customerId,ratings.customerId,ratings.rating,averageRating
+1,Toyota,Camry,1998,$20.95,$5.83,Point,[30.169665],[30.169665],available,CNG,66c451a3fc13ae4e3ae25f68,"[{},{}]",66c451a3fc13ae4e3ae25f69,66c451a3fc13ae4e3ae25f6a,4,3.1
+2,Infiniti,G,2011,$28.91,$4.06,Point,[26.830199],[26.830199],maintenance,LPG,66c451a3fc13ae4e3ae25f6b,"[{},{},{},{}]",66c451a3fc13ae4e3ae25f6c,66c451a3fc13ae4e3ae25f6d,1,4.6
+3,Toyota,Matrix,2012,$27.35,$3.09,Point,[54.3843215],[54.3843215],inTrip,CNG,66c451a3fc13ae4e3ae25f6e,"[{},{},{},{},{}]",66c451a3fc13ae4e3ae25f6f,66c451a3fc13ae4e3ae25f70,4,2.6
+4,Ford,Taurus,1999,$29.95,$6.79,Point,[28.9693852],[28.9693852],inTrip,Bio-Diesel,66c451a3fc13ae4e3ae25f71,"[{},{},{},{}]",66c451a3fc13ae4e3ae25f72,66c451a3fc13ae4e3ae25f73,3,3.8
+5,BMW,5 Series,1993,$24.33,$6.04,Point,[-7.6387228],[-7.6387228],booked,LPG,66c451a3fc13ae4e3ae25f74,"[{},{},{},{}]",66c451a3fc13ae4e3ae25f75,66c451a3fc13ae4e3ae25f76,2,3.8

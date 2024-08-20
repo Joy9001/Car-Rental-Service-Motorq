@@ -1,0 +1,147 @@
+[
+	{
+		"_id": {
+			"$oid": "66c451dd96aa5625b132ef51"
+		},
+		"registrationNumber": "WA1CKBFP5AA669572",
+		"make": "Toyota",
+		"model": "Camry",
+		"year": 1998,
+		"rentRate": {
+			"daily": "$20.95",
+			"hourly": "$5.83"
+		},
+		"location": {
+			"type": "Point",
+			"coordinates": [30.169665, 31.47614]
+		},
+		"status": "available",
+		"fuelType": "CNG",
+		"currentCustomerId": "66c44da396aa5625b132ef48",
+		"ratings": [
+			{
+				"customerId": {
+					"$oid": "66c44da396aa5625b132ef49"
+				},
+				"rating": 3
+			}
+		],
+		"averageRating": 3.1
+	},
+	{
+		"_id": {
+			"$oid": "66c451dd96aa5625b132ef52"
+		},
+		"registrationNumber": "1FTSF3B59AE596471",
+		"make": "Infiniti",
+		"model": "G",
+		"year": 2011,
+		"rentRate": {
+			"daily": "$28.91",
+			"hourly": "$4.06"
+		},
+		"location": {
+			"type": "Point",
+			"coordinates": [26.830199, 30.802498]
+		},
+		"status": "maintenance",
+		"fuelType": "LPG",
+		"currentCustomerId": "66c44da396aa5625b132ef49",
+		"ratings": [
+			{
+				"customerId": {
+					"$oid": "66c44da396aa5625b132ef4a"
+				},
+				"rating": 3
+			}
+		],
+		"averageRating": 4.6
+	},
+	{
+		"_id": {
+			"$oid": "66c451dd96aa5625b132ef53"
+		},
+		"registrationNumber": "1G6DA1E37E0500139",
+		"make": "Toyota",
+		"model": "Matrix",
+		"year": 2012,
+		"rentRate": {
+			"daily": "$27.35",
+			"hourly": "$3.09"
+		},
+		"location": {
+			"type": "Point",
+			"coordinates": [54.3843215, 18.6085667]
+		},
+		"status": "inTrip",
+		"fuelType": "CNG",
+		"currentCustomerId": "66c44da396aa5625b132ef4a",
+		"ratings": [
+			{
+				"customerId": {
+					"$oid": "66c44da396aa5625b132ef4b"
+				},
+				"rating": 3
+			}
+		],
+		"averageRating": 2.6
+	},
+	{
+		"_id": {
+			"$oid": "66c451dd96aa5625b132ef54"
+		},
+		"registrationNumber": "1C4SDHCT7CC163863",
+		"make": "Ford",
+		"model": "Taurus",
+		"year": 1999,
+		"rentRate": {
+			"daily": "$29.95",
+			"hourly": "$6.79"
+		},
+		"location": {
+			"type": "Point",
+			"coordinates": [28.9693852, 41.0082376]
+		},
+		"status": "inTrip",
+		"fuelType": "Bio-Diesel",
+		"currentCustomerId": "66c44da396aa5625b132ef4b",
+		"ratings": [
+			{
+				"customerId": {
+					"$oid": "66c44da396aa5625b132ef4c"
+				},
+				"rating": 3
+			}
+		],
+		"averageRating": 3.8
+	},
+	{
+		"_id": {
+			"$oid": "66c451dd96aa5625b132ef55"
+		},
+		"registrationNumber": "WA1CKAFPXAA002460",
+		"make": "BMW",
+		"model": "5 Series",
+		"year": 1993,
+		"rentRate": {
+			"daily": "$24.33",
+			"hourly": "$6.04"
+		},
+		"location": {
+			"type": "Point",
+			"coordinates": [-7.6387228, 33.5523566]
+		},
+		"status": "booked",
+		"fuelType": "LPG",
+		"currentCustomerId": "66c44da396aa5625b132ef4c",
+		"ratings": [
+			{
+				"customerId": {
+					"$oid": "66c44da396aa5625b132ef48"
+				},
+				"rating": 3
+			}
+		],
+		"averageRating": 3.8
+	}
+]
