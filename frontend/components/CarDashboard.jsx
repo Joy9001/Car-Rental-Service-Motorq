@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import axios from 'axios';
 import {
 	MRT_EditActionButtons,
@@ -19,9 +19,14 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
+import { useOutletContext } from 'react-router-dom';
+// import { io } from 'socket.io-client';
 
 const CarDashboard = () => {
-	const [data, setData] = useState([]);
+	// const [data, setData] = useState([]);
+
+	const { data, setData } = useOutletContext();
+	console.log('data in CarDashboard', data);
 
 	// get cars data
 	useEffect(() => {
@@ -33,7 +38,7 @@ const CarDashboard = () => {
 			.catch((error) => {
 				console.error('Error fetching data: ', error);
 			});
-	}, []);
+	}, [setData]);
 
 	// console.log(data);
 

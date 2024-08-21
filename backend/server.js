@@ -15,7 +15,11 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
 const io = new Server(server, {
 	cors: {
-		origin: [process.env.DOMAIN, 'https://admin.socket.io'],
+		origin: [
+			process.env.DOMAIN,
+			'http://localhost:5173',
+			'https://admin.socket.io',
+		],
 		methods: ['GET', 'POST'],
 		credentials: false,
 	},
@@ -36,16 +40,20 @@ app.get('/', (req, res) => {
 	res.send('Hello World!');
 });
 
-let userSocket = {};
+let userSockets = {};
+console.log('userSockets', userSockets);
 
 io.on('connection', (socket) => {
 	const customerId = socket.handshake.query.customerId;
 	if (customerId) {
-		userSocket[customerId] = socket.id;
+		userSockets[customerId] = socket.id;
 	}
 	console.log('a user connected', socket.id);
+	console.log('userSockets', userSockets);
+
 	socket.on('disconnect', () => {
 		console.log('user disconnected', socket.id);
+		console.log('userSockets', userSockets);
 	});
 });
 
@@ -61,3 +69,5 @@ server.listen(PORT, async () => {
 		console.log('Error connecting to MongoDB: ', error.message);
 	}
 });
+
+export { userSockets, io };

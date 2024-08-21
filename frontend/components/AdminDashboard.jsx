@@ -17,8 +17,16 @@ import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems } from './ListItems.jsx';
 import CarDashboard from './CarDashboard.jsx';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import MapIcon from '@mui/icons-material/Map';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import { useNavigate } from 'react-router-dom';
+import Map from './Map.jsx';
+import PendingRequestTable from './PendingRequests.jsx';
 
 const drawerWidth = 240;
 
@@ -70,14 +78,16 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-	const [open, setOpen] = React.useState(true);
+	const navigate = useNavigate();
+
+	const [open, setOpen] = React.useState(false);
 	const toggleDrawer = () => {
 		setOpen(!open);
 	};
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
-			<Box sx={{ display: 'flex' }}>
+			<Box sx={{ display: 'flex', flexDirection: 'row' }}>
 				<CssBaseline />
 				<AppBar position="absolute" open={open}>
 					<Toolbar
@@ -123,7 +133,40 @@ export default function Dashboard() {
 						</IconButton>
 					</Toolbar>
 					<Divider />
-					<List component="nav">{mainListItems}</List>
+					<List component="nav">
+						{/* Cars */}
+						<ListItemButton
+							onClick={() =>
+								navigate(
+									'/admin-dashboard/cars?id=' +
+										window.location.search.split('=')[1]
+								)
+							}>
+							<ListItemIcon>
+								<DirectionsCarIcon />
+							</ListItemIcon>
+							<ListItemText primary="Cars" />
+						</ListItemButton>
+						{/* Map */}
+						<ListItemButton
+							onClick={() =>
+								navigate(
+									'/admin-dashboard/map?id=' +
+										window.location.search.split('=')[1]
+								)
+							}>
+							<ListItemIcon>
+								<MapIcon />
+							</ListItemIcon>
+							<ListItemText primary="Map" />
+						</ListItemButton>
+						<ListItemButton>
+							<ListItemIcon>
+								<VerifiedIcon />
+							</ListItemIcon>
+							<ListItemText primary="Pending Requests" />
+						</ListItemButton>
+					</List>
 				</Drawer>
 				<Box
 					component="main"
@@ -151,8 +194,12 @@ export default function Dashboard() {
 						<Grid container spacing={3}>
 							{/* Cars */}
 							<CarDashboard />
-							{/* Recent Deposits */}
-							{/* Recent Orders */}
+							{/* Map */}
+							<div id="map">
+								<Map />
+							</div>
+							{/* Pending Cancellation Requests */}
+							<PendingRequestTable />
 						</Grid>
 					</Container>
 				</Box>

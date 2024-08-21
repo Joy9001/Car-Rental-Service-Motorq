@@ -9,53 +9,11 @@ import PropTypes from 'prop-types';
 import Rating from '@mui/material/Rating';
 import axios from 'axios';
 import { OutlinedInput } from '@mui/material';
-import { useState } from 'react';
-
-function handleCarBooking(
-	car,
-	hourlyDuration = 0,
-	dailyDuration = 0,
-	setCarData,
-	setStartDate,
-	setEndDate,
-	setTotalPrice,
-	setBookedBy
-) {
-	if (hourlyDuration === 0 && dailyDuration === 0) {
-		alert('Please enter duration to book');
-		return;
-	} else if (hourlyDuration !== 0 && dailyDuration !== 0) {
-		alert('Please enter either hourly or daily duration');
-		return;
-	}
-	axios
-		.post('http://localhost:3000/customer/api/cars/book', {
-			carId: car.id,
-			hourlyDuration,
-			dailyDuration,
-		})
-		.then((res) => {
-			console.log(res);
-			setCarData((prevData) => {
-				const updatedData = prevData.map((item) => {
-					if (item.id === car.id) {
-						return res.data.carData;
-					}
-					setStartDate(res.data.startDate);
-					setEndDate(res.data.endDate);
-					setTotalPrice(res.data.totalPrice);
-					setBookedBy(res.data.currentCustomer);
-					return item;
-				});
-				return updatedData;
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-}
+import { useState, useEffect } from 'react';
+import Alert from '@mui/material/Alert';
 
 export default function CarCard({ car, setCarData }) {
+	// console.log('CarCard', car);
 	const [hourlyDuration, setHourlyDuration] = useState(0);
 	const [dailyDuration, setDailyDuration] = useState(0);
 	const [startDate, setStartDate] = useState(
@@ -68,6 +26,129 @@ export default function CarCard({ car, setCarData }) {
 		car.totalPrice ? car.totalPrice : 0
 	);
 	const [bookedBy, setBookedBy] = useState(car.currentCustomer);
+
+	const [ratingFlag, setRatingFlag] = useState(false);
+	const [rating, setRating] = useState(
+		car.averageRating ? car.averageRating : 0
+	);
+
+	const [alert, setAlert] = useState({
+		severity: 'info',
+		message: '',
+	});
+
+	useEffect(() => {
+		console.log('CarCard useEffect', car);
+		setHourlyDuration(0);
+		setDailyDuration(0);
+		setStartDate(car.startDate || new Date().toLocaleDateString());
+		setEndDate(car.endDate || new Date().toLocaleDateString());
+		setTotalPrice(car.totalPrice || 0);
+		setBookedBy(car.currentCustomer || '');
+	}, [car]);
+
+	function handleRating(carId, rating) {
+		axios
+			.post('http://localhost:3000/customer/api/cars/rate', {
+				carId,
+				rating,
+			})
+			.then((res) => {
+				console.log(res);
+				setRatingFlag(false);
+				setRating(res.rating);
+				// setCarData((prevData) => {
+				// 	const updatedData = prevData.map((item) => {
+				// 		if (item.id === carId) {
+				// 			return { ...item };
+				// 		}
+				// 		return item;
+				// 	});
+				// 	return updatedData;
+				// });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function handleCarBooking(
+		car,
+		hourlyDuration = 0,
+		dailyDuration = 0,
+		setCarData,
+		setStartDate,
+		setEndDate,
+		setTotalPrice,
+		setBookedBy
+	) {
+		if (hourlyDuration === 0 && dailyDuration === 0) {
+			alert('Please enter duration to book');
+			return;
+		} else if (hourlyDuration !== 0 && dailyDuration !== 0) {
+			alert('Please enter either hourly or daily duration');
+			return;
+		}
+		axios
+			.post('http://localhost:3000/customer/api/cars/book', {
+				carId: car.id,
+				hourlyDuration,
+				dailyDuration,
+			})
+			.then((res) => {
+				console.log(res);
+				if (res.data.error) {
+					setAlert({
+						severity: 'error',
+						message: res.data.error,
+					});
+					return;
+				}
+				setCarData((prevData) => {
+					const updatedData = prevData.map((item) => {
+						if (item.id === car.id) {
+							return {
+								...res.data.carData,
+								currentCustomer: res.data.currentCustomer,
+								startDate: res.data.startDate,
+								endDate: res.data.endDate,
+								totalPrice: res.data.totalPrice,
+							};
+						}
+						setStartDate(res.data.startDate);
+						setEndDate(res.data.endDate);
+						setTotalPrice(res.data.totalPrice);
+						setBookedBy(res.data.currentCustomer);
+						return item;
+					});
+					return updatedData;
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function handleCancelBooking() {
+		axios
+			.post('http://localhost:3000/customer/api/cars/cancel', {
+				carId: car.id,
+			})
+			.then((res) => {
+				console.log(res);
+				if (res.data.message) {
+					setAlert({
+						severity: 'success',
+						message: res.data.message,
+					});
+				} else {
+					setAlert({
+						severity: 'error',
+						message: res.data.error,
+					});
+				}
+			});
+	}
 
 	let buttonComponent;
 	switch (car.status) {
@@ -119,14 +200,50 @@ export default function CarCard({ car, setCarData }) {
 			break;
 		case 'booked':
 			buttonComponent = (
-				<Button
-					variant="contained"
-					size="medium"
-					fullWidth
-					color="primary"
-					disabled>
-					Booked
-				</Button>
+				<>
+					<Button
+						variant="contained"
+						size="medium"
+						fullWidth
+						color="primary"
+						disabled>
+						Booked
+					</Button>{' '}
+					<Button
+						size="small"
+						color="primary"
+						onClick={() => handleCancelBooking}>
+						Cancel Ride
+					</Button>
+					<Button
+						size="small"
+						color="primary"
+						onClick={() => {
+							setRatingFlag((prev) => !prev);
+						}}>
+						Rate Car
+					</Button>
+					{ratingFlag && (
+						<>
+							<Rating
+								name="simple-controlled"
+								value={rating}
+								onChange={(event, newValue) => {
+									setRating(newValue);
+								}}
+							/>
+							<Button
+								variant="contained"
+								size="small"
+								style={{ marginTop: '10px' }}
+								fullWidth
+								color="primary"
+								onClick={() => handleRating(car.id, rating)}>
+								Submit Rating
+							</Button>
+						</>
+					)}
+				</>
 			);
 			break;
 		case 'inTrip':
@@ -205,6 +322,9 @@ export default function CarCard({ car, setCarData }) {
 			<CardActions style={{ flexDirection: 'column' }}>
 				{buttonComponent}
 			</CardActions>
+			{alert.message && (
+				<Alert severity={alert.severity}>{alert.message}</Alert>
+			)}
 		</Card>
 	);
 }

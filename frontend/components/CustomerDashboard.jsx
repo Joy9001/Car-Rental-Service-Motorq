@@ -13,11 +13,16 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems } from './ListItems.jsx';
+// import { mainListItems } from './ListItems.jsx';
 import CarCard from './CarCard.jsx';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { OutlinedInput } from '@mui/material';
+import { useOutletContext } from 'react-router-dom';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 const drawerWidth = 240;
 
@@ -128,7 +133,8 @@ function handleSearch(setData, query) {
 }
 
 export default function CustomerDashboard() {
-	const [data, setData] = useState([]);
+	// const [data, setData] = useState([]);
+	const { data, setData } = useOutletContext();
 	const [query, setQuery] = useState({
 		fueltype: '',
 		make: '',
@@ -149,11 +155,11 @@ export default function CustomerDashboard() {
 			.catch((error) => {
 				console.error('Error fetching data: ', error);
 			});
-	}, []);
+	}, [setData]);
 
 	useEffect(() => {
 		handleSearch(setData, query);
-	}, [query]);
+	}, [query, setData]);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -163,7 +169,7 @@ export default function CustomerDashboard() {
 		}));
 	};
 
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(false);
 	const toggleDrawer = () => {
 		setOpen(!open);
 	};
@@ -216,7 +222,14 @@ export default function CustomerDashboard() {
 						</IconButton>
 					</Toolbar>
 					<Divider />
-					<List component="nav">{mainListItems}</List>
+					<List component="nav">
+						<ListItemButton>
+							<ListItemIcon>
+								<DirectionsCarIcon />
+							</ListItemIcon>
+							<ListItemText primary="Cars" />
+						</ListItemButton>
+					</List>
 				</Drawer>
 				<Box
 					component="main"

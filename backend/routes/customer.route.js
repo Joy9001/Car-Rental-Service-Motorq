@@ -5,6 +5,10 @@ import Booking from '../models/booking.model.js';
 import { formatCarData, deformatCarData } from '../helpers/fomatData.js';
 import currentCustomerId from '../helpers/currentCustomer.js';
 const router = Router();
+import { userSockets, io } from '../server.js';
+import transporter from '../helpers/nodeMailer.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 router.get('/api/cars', async (req, res) => {
 	const findCarsData = await Car.find(
@@ -81,10 +85,15 @@ router.post('/api/cars/book', async (req, res) => {
 		// 	return res.status(404).json({ error: 'Customer not found' });
 		// }
 
+		// final check if car is available
 		if (carData.status === 'available') {
 			await Car.findByIdAndUpdate(carId, {
 				status: 'booked',
 				currentCustomerId: currentCustomerId,
+			});
+		} else {
+			return res.status(404).json({
+				error: 'Car not available. Please chooose other available vehicles.',
 			});
 		}
 
@@ -93,7 +102,8 @@ router.post('/api/cars/book', async (req, res) => {
 		let totalPrice = 0;
 
 		if (dailyDuration) {
-			endDate.setDate(endDate.getDay() + parseInt(dailyDuration));
+			console.log(endDate.getDate() + parseInt(dailyDuration));
+			endDate.setDate(endDate.getDate() + parseInt(dailyDuration));
 			totalPrice = parseFloat(carData.rentRate.daily) * parseInt(dailyDuration);
 		} else if (hourlyDuration) {
 			endDate.setHours(endDate.getHours() + parseInt(hourlyDuration));
@@ -101,7 +111,8 @@ router.post('/api/cars/book', async (req, res) => {
 				parseFloat(carData.rentRate.hourly) * parseFloat(hourlyDuration);
 		}
 
-		console.log(totalPrice);
+		// console.log(totalPrice);
+
 		// Create booking
 		const bookingData = new Booking({
 			carId,
@@ -118,23 +129,155 @@ router.post('/api/cars/book', async (req, res) => {
 			currentCustomerId
 		).lean();
 
+		// start date & end date
+		let formatedStartDate =
+			bookingData.startDate.toLocaleDateString() +
+			' ' +
+			bookingData.startDate.toLocaleTimeString();
+
+		let formatedEndDate =
+			bookingData.endDate.toLocaleDateString() +
+			' ' +
+			bookingData.endDate.toLocaleTimeString();
+
+		//socket.io functionality
+		const othersockets = Object.keys(userSockets).filter(
+			(id) => id !== currentCustomerId
+		);
+		// console.log('othersockets', othersockets);
+
+		othersockets.forEach((id) => {
+			// console.log('id', id);
+			io.to(userSockets[id]).emit('car-booked', {
+				carData: { ...formatCarData(updatedCarData) },
+				currentCustomer: updatedCustomerData.name,
+				totalPrice,
+				startDate: formatedStartDate,
+				endDate: formatedEndDate,
+			});
+		});
+
+		// send main to the user
+		const mailOptions = {
+			from: process.env.EMAIL,
+			to: updatedCustomerData.email,
+			subject: 'Car Booked',
+			text: `You have successfully booked ${updatedCarData.name} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: ${updatedCarData.location}. \nThank you for using our service.`,
+		};
+
+		await transporter.sendMail(mailOptions);
+		console.log(
+			'Booking confirmation email sent to:',
+			updatedCustomerData.email
+		);
+
+		// sent main to admin
+		const adminMailOptions = {
+			from: process.env.EMAIL,
+			to: process.env.ADMIN_EMAIL,
+			subject: 'Car Booked',
+			text: `Car ${updatedCarData.name} has been booked by ${updatedCustomerData.name} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: ${updatedCarData.location}.`,
+		};
+
+		await transporter.sendMail(adminMailOptions);
+		console.log('Booking confirmation email sent to:', process.env.ADMIN_EMAIL);
+
 		return res.json({
 			carData: { ...formatCarData(updatedCarData) },
 			currentCustomer: updatedCustomerData.name,
 			totalPrice,
-			startDate:
-				bookingData.startDate.toLocaleDateString() +
-				' ' +
-				bookingData.startDate.toLocaleTimeString(),
-			endDate:
-				bookingData.endDate.toLocaleDateString() +
-				' ' +
-				bookingData.endDate.toLocaleTimeString(),
+			startDate: formatedStartDate,
+			endDate: formatedEndDate,
 		});
 	} catch (error) {
 		console.error('Error booking car: ', error);
 		return res.status(500).json({ error: 'Internal server error' });
 	}
+});
+
+router.post('/api/cars/rate', async (req, res) => {
+	const { carId, rating } = req.body;
+
+	if (!carId || !rating) {
+		return res.status(400).json({ error: 'Invalid input data' });
+	}
+
+	try {
+		const carData = await Car.findById(carId);
+		if (!carData) {
+			return res.status(404).json({ error: 'Car not found' });
+		}
+
+		// Update car rating
+		carData.ratings.push({
+			customerId: currentCustomerId,
+			rating,
+		});
+
+		carData.averageRating = carData.ratings.reduce(
+			(sum, rating) => sum + rating.rating,
+			0
+		);
+
+		carData.averageRating /= carData.ratings.length;
+
+		await carData.save();
+
+		return res.json({
+			carData: { ...formatCarData(carData) },
+			rating: carData.averageRating,
+		});
+	} catch (error) {
+		console.error('Error rating car: ', error);
+		return res.status(500).json({ error: 'Internal server error' });
+	}
+});
+
+router.post('/api/cars/cancel', async (req, res) => {
+	const { carId } = req.body;
+
+	if (!carId) {
+		return res.status(400).json({ error: 'Invalid input data' });
+	}
+
+	const carData = await Car.findById(carId);
+
+	if (!carData) {
+		return res.status(404).json({ error: 'Car not found' });
+	}
+
+	if (
+		carData.status === 'booked' &&
+		carData.currentCustomerId == currentCustomerId
+	) {
+		const findBookingData = await Booking.findOne({
+			carId: carData._id,
+			customerId: currentCustomerId,
+			status: 'confirmed',
+		});
+
+		if (!findBookingData) {
+			return res.status(404).json({ error: 'Booking not found' });
+		}
+
+		findBookingData.status = 'pending cancellation';
+		await findBookingData.save();
+
+		// send email to the admin
+		const adminMailOptions = {
+			from: process.env.EMAIL,
+			to: process.env.ADMIN_EMAIL,
+			subject: 'Booking Cancellation Request',
+			text: `Customer has requested to cancel the booking of ${carData.name} from ${findBookingData.startDate} to ${findBookingData.endDate}.`,
+		};
+
+		await transporter.sendMail(adminMailOptions);
+		console.log('Booking cancellation email sent to:', process.env.ADMIN_EMAIL);
+
+		return res.json({ message: 'Booking cancellation requested' });
+	}
+
+	return res.status(404).json({ error: 'Car not booked' });
 });
 
 export default router;

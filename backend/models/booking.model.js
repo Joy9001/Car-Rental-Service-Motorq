@@ -13,15 +13,19 @@ const bookingSchema = new Schema(
 		endDate: { type: Date, required: true },
 		status: {
 			type: String,
-			enum: ['pending', 'confirmed', 'inProgress', 'completed', 'cancelled'],
+			enum: [
+				'pending',
+				'confirmed',
+				'inProgress',
+				'completed',
+				'cancelled',
+				'pending cancellation',
+			],
 			default: 'pending',
 		},
 		totalPrice: { type: Number, required: true },
 		cancellationReason: String,
-		rating: {
-			value: { type: Number, min: 1, max: 5 },
-			comment: String,
-		},
+		rating: { type: Number, min: 1, max: 5 },
 	},
 	{ timestamps: true }
 );

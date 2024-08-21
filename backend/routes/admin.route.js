@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import Car from '../models/car.model.js';
 import { formatCarData, deformatCarData } from '../helpers/fomatData.js';
+import Booking from '../models/booking.model.js';
+import transporter from '../helpers/nodeMailer.js';
+import Customer from '../models/customer.model.js';
 
 const router = Router();
 
@@ -77,6 +80,89 @@ router.delete('/api/cars/:id', async (req, res) => {
 	await Car.findOneAndDelete({ _id: carId });
 
 	return res.json({ message: 'Car deleted' });
+});
+
+// all pending booking requests
+router.get('/api/bookings', async (req, res) => {
+	const status = req.query.status;
+	const findBookingData = await Booking.find({ status: status });
+	const formatedBookingData = findBookingData.map((booking) => {
+		if (booking) {
+			return {
+				_id: booking._id,
+				carId: booking.carId,
+				customerId: booking.customerId,
+				startDate:
+					booking.startDate.toLocaleDateString() +
+					' ' +
+					booking.startDate.toLocaleTimeString(),
+				endDate:
+					booking.endDate.toLocaleDateString() +
+					' ' +
+					booking.endDate.toLocaleTimeString(),
+				totalPrice: booking.totalPrice,
+				status: booking.status,
+				rating: booking.rating,
+			};
+		}
+	});
+	return res.json(formatedBookingData);
+});
+
+// approve a booking cancellation request
+router.post('/api/bookings/approve', async (req, res) => {
+	const bookingId = req.body.bookingId;
+	const status = req.body.status;
+
+	const updatedBooking = await Booking.findByIdAndUpdate(
+		bookingId,
+		{
+			$set: { status: status },
+		},
+		{
+			new: true,
+		}
+	);
+
+	const formatedBookingData = {
+		_id: updatedBooking._id,
+		carId: updatedBooking.carId,
+		customerId: updatedBooking.customerId,
+		startDate:
+			updatedBooking.startDate.toLocaleDateString() +
+			' ' +
+			updatedBooking.startDate.toLocaleTimeString(),
+		endDate:
+			updatedBooking.endDate.toLocaleDateString() +
+			' ' +
+			updatedBooking.endDate.toLocaleTimeString(),
+		totalPrice: updatedBooking.totalPrice,
+		status: updatedBooking.status,
+		rating: updatedBooking.rating,
+	};
+
+	const findCarData = await Car.findOne({ _id: updatedBooking.carId });
+	findCarData.status = 'available';
+	await findCarData.save();
+
+	const formatedCarData = formatCarData(findCarData);
+
+	// send mail to customer
+	const findCutomer = await Customer.findById(updatedBooking.customerId);
+	const mailOptions = {
+		from: process.env.EMAIL,
+		to: findCutomer.email,
+		subject: 'Booking Cancellation Approved',
+		text: `Your booking with booking id ${bookingId} has been cancelled successfully.`,
+	};
+
+	await transporter.sendMail(mailOptions);
+	console.log('Booking cancellation email sent to:', findCutomer.email);
+
+	return res.json({
+		bookingData: formatedBookingData,
+		updatedCarData: formatedCarData,
+	});
 });
 
 export default router;
