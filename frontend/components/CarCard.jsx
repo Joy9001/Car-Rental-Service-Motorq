@@ -212,7 +212,7 @@ export default function CarCard({ car, setCarData }) {
 					<Button
 						size="small"
 						color="primary"
-						onClick={() => handleCancelBooking}>
+						onClick={() => handleCancelBooking()}>
 						Cancel Ride
 					</Button>
 					<Button

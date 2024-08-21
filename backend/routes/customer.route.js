@@ -157,12 +157,13 @@ router.post('/api/cars/book', async (req, res) => {
 			});
 		});
 
-		// send main to the user
+		console.log('updatedCarData', updatedCarData.location.coordinates);
+		// send mail to the user
 		const mailOptions = {
 			from: process.env.EMAIL,
 			to: updatedCustomerData.email,
 			subject: 'Car Booked',
-			text: `You have successfully booked ${updatedCarData.name} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: ${updatedCarData.location}. \nThank you for using our service.`,
+			text: `You have successfully booked ${updatedCarData.model} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: [${updatedCarData.location.coordinates[0]}, ${updatedCarData.location.coordinates[1]}]. \nThank you for using our service.`,
 		};
 
 		await transporter.sendMail(mailOptions);
@@ -171,12 +172,12 @@ router.post('/api/cars/book', async (req, res) => {
 			updatedCustomerData.email
 		);
 
-		// sent main to admin
+		// sent mail to admin
 		const adminMailOptions = {
 			from: process.env.EMAIL,
 			to: process.env.ADMIN_EMAIL,
 			subject: 'Car Booked',
-			text: `Car ${updatedCarData.name} has been booked by ${updatedCustomerData.name} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: ${updatedCarData.location}.`,
+			text: `Car ${updatedCarData.model} has been booked by ${updatedCustomerData.name} from ${formatedStartDate} to ${formatedEndDate}.\n Total Price: ${totalPrice}. \nLocation of the car: [${updatedCarData.location.coordinates[0]}, ${updatedCarData.location.coordinates[1]}].`,
 		};
 
 		await transporter.sendMail(adminMailOptions);
