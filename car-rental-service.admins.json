@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "66c4581896aa5625b132ef5c"
+  },
+  "name": "Joy Mridha",
+  "email": "joymridha939@gmail.com",
+  "password": "password",
+  "address": "949 Darwin Way",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2024-05-03T00:57:13.000Z"
+  },
+  "updatedAt": {
+    "$date": "2024-06-03T13:53:41.000Z"
+  }
+}]

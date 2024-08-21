@@ -1,147 +1,182 @@
-[
-	{
-		"_id": {
-			"$oid": "66c451dd96aa5625b132ef51"
-		},
-		"registrationNumber": "WA1CKBFP5AA669572",
-		"make": "Toyota",
-		"model": "Camry",
-		"year": 1998,
-		"rentRate": {
-			"daily": "$20.95",
-			"hourly": "$5.83"
-		},
-		"location": {
-			"type": "Point",
-			"coordinates": [30.169665, 31.47614]
-		},
-		"status": "available",
-		"fuelType": "CNG",
-		"currentCustomerId": "66c44da396aa5625b132ef48",
-		"ratings": [
-			{
-				"customerId": {
-					"$oid": "66c44da396aa5625b132ef49"
-				},
-				"rating": 3
-			}
-		],
-		"averageRating": 3.1
-	},
-	{
-		"_id": {
-			"$oid": "66c451dd96aa5625b132ef52"
-		},
-		"registrationNumber": "1FTSF3B59AE596471",
-		"make": "Infiniti",
-		"model": "G",
-		"year": 2011,
-		"rentRate": {
-			"daily": "$28.91",
-			"hourly": "$4.06"
-		},
-		"location": {
-			"type": "Point",
-			"coordinates": [26.830199, 30.802498]
-		},
-		"status": "maintenance",
-		"fuelType": "LPG",
-		"currentCustomerId": "66c44da396aa5625b132ef49",
-		"ratings": [
-			{
-				"customerId": {
-					"$oid": "66c44da396aa5625b132ef4a"
-				},
-				"rating": 3
-			}
-		],
-		"averageRating": 4.6
-	},
-	{
-		"_id": {
-			"$oid": "66c451dd96aa5625b132ef53"
-		},
-		"registrationNumber": "1G6DA1E37E0500139",
-		"make": "Toyota",
-		"model": "Matrix",
-		"year": 2012,
-		"rentRate": {
-			"daily": "$27.35",
-			"hourly": "$3.09"
-		},
-		"location": {
-			"type": "Point",
-			"coordinates": [54.3843215, 18.6085667]
-		},
-		"status": "inTrip",
-		"fuelType": "CNG",
-		"currentCustomerId": "66c44da396aa5625b132ef4a",
-		"ratings": [
-			{
-				"customerId": {
-					"$oid": "66c44da396aa5625b132ef4b"
-				},
-				"rating": 3
-			}
-		],
-		"averageRating": 2.6
-	},
-	{
-		"_id": {
-			"$oid": "66c451dd96aa5625b132ef54"
-		},
-		"registrationNumber": "1C4SDHCT7CC163863",
-		"make": "Ford",
-		"model": "Taurus",
-		"year": 1999,
-		"rentRate": {
-			"daily": "$29.95",
-			"hourly": "$6.79"
-		},
-		"location": {
-			"type": "Point",
-			"coordinates": [28.9693852, 41.0082376]
-		},
-		"status": "inTrip",
-		"fuelType": "Bio-Diesel",
-		"currentCustomerId": "66c44da396aa5625b132ef4b",
-		"ratings": [
-			{
-				"customerId": {
-					"$oid": "66c44da396aa5625b132ef4c"
-				},
-				"rating": 3
-			}
-		],
-		"averageRating": 3.8
-	},
-	{
-		"_id": {
-			"$oid": "66c451dd96aa5625b132ef55"
-		},
-		"registrationNumber": "WA1CKAFPXAA002460",
-		"make": "BMW",
-		"model": "5 Series",
-		"year": 1993,
-		"rentRate": {
-			"daily": "$24.33",
-			"hourly": "$6.04"
-		},
-		"location": {
-			"type": "Point",
-			"coordinates": [-7.6387228, 33.5523566]
-		},
-		"status": "booked",
-		"fuelType": "LPG",
-		"currentCustomerId": "66c44da396aa5625b132ef4c",
-		"ratings": [
-			{
-				"customerId": {
-					"$oid": "66c44da396aa5625b132ef48"
-				},
-				"rating": 3
-			}
-		],
-		"averageRating": 3.8
-	}
-]
+[{
+  "_id": {
+    "$oid": "66c451dd96aa5625b132ef51"
+  },
+  "registrationNumber": "WA1CKBFP5AA669572",
+  "make": "Toyota",
+  "model": "Camry",
+  "year": 1998,
+  "rentRate": {
+    "daily": "20.95",
+    "hourly": "5.83"
+  },
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      80.025,
+      13.5553
+    ]
+  },
+  "status": "available",
+  "fuelType": "CNG",
+  "currentCustomerId": {
+    "$oid": "66c44da396aa5625b132ef48"
+  },
+  "ratings": [
+    {
+      "customerId": {
+        "$oid": "66c44da396aa5625b132ef49"
+      },
+      "rating": 3
+    }
+  ],
+  "averageRating": 3,
+  "updatedAt": {
+    "$date": "2024-08-21T04:11:48.226Z"
+  },
+  "image": "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202312/658e5b5ebba32-xiaomi-su7-ev-to-take-on-tesla-293837105-16x9.jpg?size=948:533",
+  "__v": 14
+},
+{
+  "_id": {
+    "$oid": "66c451dd96aa5625b132ef52"
+  },
+  "registrationNumber": "1FTSF3B59AE596471",
+  "make": "Infiniti",
+  "model": "G",
+  "year": 2011,
+  "rentRate": {
+    "daily": 28.91,
+    "hourly": 4.06
+  },
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      80.01,
+      13.54
+    ]
+  },
+  "status": "maintenance",
+  "fuelType": "LPG",
+  "currentCustomerId": {
+    "$oid": "66c44da396aa5625b132ef49"
+  },
+  "ratings": [
+    {
+      "customerId": {
+        "$oid": "66c44da396aa5625b132ef4a"
+      },
+      "rating": 3
+    }
+  ],
+  "averageRating": 4.6,
+  "image": "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202312/658e5b5ebba32-xiaomi-su7-ev-to-take-on-tesla-293837105-16x9.jpg?size=948:533"
+},
+{
+  "_id": {
+    "$oid": "66c451dd96aa5625b132ef53"
+  },
+  "registrationNumber": "1G6DA1E37E0500139",
+  "make": "Toyota",
+  "model": "Matrix",
+  "year": 2012,
+  "rentRate": {
+    "daily": 27.35,
+    "hourly": 3.09
+  },
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      80.02,
+      13.57
+    ]
+  },
+  "status": "booked",
+  "fuelType": "CNG",
+  "currentCustomerId": {
+    "$oid": "66c44da396aa5625b132ef48"
+  },
+  "ratings": [
+    {
+      "customerId": {
+        "$oid": "66c44da396aa5625b132ef4b"
+      },
+      "rating": 3
+    }
+  ],
+  "averageRating": 2.6,
+  "image": "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202312/658e5b5ebba32-xiaomi-su7-ev-to-take-on-tesla-293837105-16x9.jpg?size=948:533",
+  "updatedAt": {
+    "$date": "2024-08-21T04:15:28.915Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "66c451dd96aa5625b132ef54"
+  },
+  "registrationNumber": "1C4SDHCT7CC163863",
+  "make": "Ford",
+  "model": "Taurus",
+  "year": 1999,
+  "rentRate": {
+    "daily": 29.95,
+    "hourly": 6.79
+  },
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      80.03,
+      13.55
+    ]
+  },
+  "status": "available",
+  "fuelType": "Bio-Diesel",
+  "currentCustomerId": {
+    "$oid": "66c44da396aa5625b132ef4b"
+  },
+  "ratings": [
+    {
+      "customerId": {
+        "$oid": "66c44da396aa5625b132ef4c"
+      },
+      "rating": 3
+    }
+  ],
+  "averageRating": 3.8,
+  "image": "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202312/658e5b5ebba32-xiaomi-su7-ev-to-take-on-tesla-293837105-16x9.jpg?size=948:533"
+},
+{
+  "_id": {
+    "$oid": "66c451dd96aa5625b132ef55"
+  },
+  "registrationNumber": "WA1CKAFPXAA002460",
+  "make": "BMW",
+  "model": "5 Series",
+  "year": 1993,
+  "rentRate": {
+    "daily": 24.33,
+    "hourly": 6.04
+  },
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      80.015,
+      13.56
+    ]
+  },
+  "status": "inTrip",
+  "fuelType": "LPG",
+  "currentCustomerId": {
+    "$oid": "66c44da396aa5625b132ef4c"
+  },
+  "ratings": [
+    {
+      "customerId": {
+        "$oid": "66c44da396aa5625b132ef48"
+      },
+      "rating": 3
+    }
+  ],
+  "averageRating": 3.8,
+  "image": "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202312/658e5b5ebba32-xiaomi-su7-ev-to-take-on-tesla-293837105-16x9.jpg?size=948:533"
+}]
